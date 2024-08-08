@@ -1,0 +1,29 @@
+### This code doesn't work in Jupyter because it puts in fullscreen the jupyter page ###
+### It works in Pycharm ###
+
+import webview
+import ctypes
+
+def create_window():
+    # Create a window with standard controls
+    window = webview.create_window(
+        "My Full Page App",
+        "https://www.example.com",  # Replace with your URL or local HTML file
+        width=800,
+        height=600,
+        resizable=True,
+        frameless=False  # Ensure the window has a frame with controls
+    )
+
+    # Maximize the window on Windows
+    def maximize_window():
+        user32 = ctypes.windll.user32
+        hwnd = user32.GetForegroundWindow()
+        user32.ShowWindow(hwnd, 3)  # SW_MAXIMIZE
+
+    webview.windows[0].events.loaded += maximize_window
+
+    webview.start()
+
+if __name__ == "__main__":
+    create_window()
